@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+{#    <link rel="icon" href="http://v3.bootcss.com/favicon.ico">#}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="../static/bootstrap-4.3.1-dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- 必须在引入bootstarp.js之前引入 -->
+    <script src="../static/jquery-3.3.1.min.js"></script>
+
+    <script src="../static/bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
+
+   <link href="../static/css/index.css" rel="stylesheet">
+
+    <title>在线考试系统</title>
+
+</head>
+<body>
+
+<nav class="navbar navbar-expand-sm bg-light navbar-light ">
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" href="/toIndex/"><h3>在线考试系统 首页</h3></a>
+        </li>
+
+{#         <li class="nav-item active">#}
+{#            <a class="nav-link" href="/toLogin/">学生登陆</a>#}
+{##}
+{#        </li>#}
+{##}
+{#            <li class="nav-item active">#}
+{#            <a class="nav-link" href="/admin/">教师登陆</a>#}
+{#            </li>#}
+        <li>
+            <button data-target="#stuModal" data-toggle="modal" class="btn btn-primary">学生登陆</button>
+        </li>
+
+        <li>
+            <button data-target="#teaModal" data-toggle="modal" class="btn btn-primary">教师登陆</button>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" href="/admin">管理员</a>
+        </li>
+
+
+        <li style="position: fixed;right: 70px; font-size: 40px;color: #9fcdff">{{ student.name }}{{ message }}</li>
+       <a href="/logout/"><li style="position: fixed;right: 20px; font-size: 20px;top:22px;color:#cc1313">退出</li></a>
+
+    </ul>
+</nav>
+
+<div class="container">
+
+  <br>
+  <!-- Nav pills -->
+  <ul class="nav nav-pills" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link active" data-toggle="pill" href="#home">个人信息</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="pill" href="#menu1">考试信息</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="pill" href="#menu2">成绩查询</a>
+    </li>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div id="home" class="container tab-pane active"><br>
+      <h3>个人信息</h3>
+
+        <table class="table">
+    <thead>
+      <tr>
+        <th>属性</th>
+        <th>信息</th>
+
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>学号</td>
+        <td>{{ student.id }}</td>
+
+      </tr>
+      <tr class="table-primary">
+        <td>姓名</td>
+        <td>{{ student.name }}</td>
+
+      </tr>
+      <tr class="table-success">
+        <td>性别</td>
+        <td>{{ student.sex }}</td>
+
+      </tr>
+      <tr class="table-danger">
+        <td>学院</td>
+        <td>{{ student.dept }}</td>
+
+      </tr>
+
+       <tr class="table-success">
+        <td>专业</td>
+        <td>{{ student.major }}</td>
+
+      </tr>
+
+      <tr class="table-warning">
+        <td>邮箱地址</td>
+        <td>{{ student.email }}</td>
+
+      </tr>
+      <tr class="table-active">
+        <td>出生日期</td>
+        <td>{{ student.birth }}</td>
+
+      </tr>
+
+    </tbody>
+  </table>
+    </div>
+
+    <div id="menu1" class="container tab-pane fade"><br>
+      <h3>考试信息</h3>
+      <p></p>
+        <table class="table">
+    <thead>
+      <tr>
+          <th>学号</th>
+        <th>姓名</th>
+        <th>考试科目</th>
+          <th>考试时间</th>
+          <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+    {#   遍历字典  paper #}
+    {% for paper1 in paper %}
+
+     <tr class="table-info">
+          <td>{{ student.id }}</td>
+          <td>{{ student.name }}</td>
+          <td>{{ paper1.subject }}{{ paper2.subject }}</td>
+          <td>{{ paper1.examtime }} {{ paper2.examtime }}</td>
+          <td>
+              <a href="/startExam/?sid={{ student.id }}&subject={{ paper1.subject }}">
+              <button class="btn btn-primary" id="toExam+{{ paper1.subject }}">开始考试</button>
+             </a>
+          </td>
+      </tr>
+    {% endfor %}
+
+
+
+    </tbody>
+  </table>
+    </div>
+
+    <div id="menu2" class="container tab-pane fade"><br>
+      <h3>考试成绩</h3>
+      <p></p>
+        <table class="table">
+        <thead>
+          <tr>
+            <th>姓名</th>
+            <th>科目</th>
+            <th>成绩</th>
+
+          </tr>
+        </thead>
+    <tbody>
+
+    {% for grade1 in grade %}
+        <tr class="table-primary">
+        <td>{{ student.name }}</td>
+        <td>{{ grade1.subject }}</td>
+        <td>{{ grade1.grade }}</td>
+
+      </tr>
+    {% endfor %}
+
+
+
+
+    </tbody>
+  </table>
+    </div>
+  </div>
+</div>
+
+
+{#学生登录的模态对话框#}
+<div class="modal fade" tabindex="-1" role="dialog" id="stuModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">学生登陆</h4>
+            </div>
+            <form class="form-horizontal" action="/studentLogin/" method="post">
+            <div class="modal-body">
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">学生学号</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" name="id" placeholder="输入学号">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="addr" class="col-sm-3 control-label">密码</label>
+                        <div class="col-sm-9">
+                            <!--
+                            <textarea id="addr" class="form-control" rows="3"></textarea>
+                            -->
+                            <input type="password" class="form-control" name="password" placeholder="输入密码">
+                         </div>
+                    </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="submit" class="btn btn-primary">登陆</button>
+            </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+{#老师登录的模态对话框#}
+<div class="modal fade" tabindex="-1" role="dialog" id="teaModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">教师登陆</h4>
+            </div>
+            <form class="form-horizontal" action="/teacherLogin/" method="post">
+            <div class="modal-body">
+
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-3 control-label">教师工号</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" name="id" placeholder="输入学号">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="addr" class="col-sm-3 control-label">密码</label>
+                        <div class="col-sm-9">
+                            <!--
+                            <textarea id="addr" class="form-control" rows="3"></textarea>
+                            -->
+                            <input type="password" name="password" placeholder="输入密码" class="form-control">
+                         </div>
+                    </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="submit" class="btn btn-primary">登陆</button>
+            </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+</body>
+
+<script>
+    $("#toExam+{{ paper1.subject }}").click(function () {
+
+    });
+</script>
+</html>

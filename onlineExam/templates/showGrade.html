@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="../static/bootstrap-4.3.1-dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- 必须在引入bootstarp.js之前引入 -->
+    <script src="../static/jquery-3.3.1.min.js"></script>
+
+    <script src="../static/bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
+
+
+    <script src="../static/js/echarts.min.js"></script>
+
+    <title>成绩</title>
+</head>
+<body>
+ <table class="table">
+            <thead>
+              <tr>
+                <th>学生学号</th>
+                <th>考试科目</th>
+                  <th>成绩</th>
+              </tr>
+            </thead>
+
+            <tbody>
+            {#   遍历字典  grade #}
+            {% for grade in grade %}
+            <tr class="table-info">
+                <td>{{ grade.sid }}</td>
+                <td>{{ grade.subject }}</td>
+                <td>{{ grade.grade }}</td>
+                </tr>
+            {% endfor %}
+
+
+            </tbody>
+
+          </table>
+
+<div id="main1" style="width: 700px;height:500px;"></div>
+ <script type="text/javascript">
+     var myChart1=echarts.init(document.getElementById('main1'));
+    myChart1.setOption({
+    title : {
+        text: '{{ subject }}',
+        subtext: '',
+        x:'center'
+    },
+    tooltip : {
+        trigger: 'item',
+        formatter: "{a} <br/>{b} : {c} ({d}%)"
+    },
+    legend: {
+        orient: 'vertical',
+        left: 'left',
+
+    },
+    series : [
+        {
+            name: '{{ subject }}',
+            type: 'pie',
+            radius : '55%',
+            center: ['50%', '60%'],
+            data:[
+                {value:{{ data.data1 }}, name:'<60'},
+                {value:{{ data.data2}}, name:'60-70'},
+                {value:{{ data.data3 }}, name:'70-80'},
+                {value:{{ data.data4 }}, name:'80-90'},
+                {value:{{ data.data5 }}, name:'>90'}
+            ],
+            itemStyle: {
+                emphasis: {
+                    shadowBlur: 10,
+                    shadowOffsetX: 0,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                }
+            }
+        }
+    ]
+
+})
+ </script>
+</body>
+</html>

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+{#     <link rel="icon" href="http://v3.bootcss.com/favicon.ico">#}
+
+    <link href="../static/bootstrap-4.3.1-dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- 必须在引入bootstarp.js之前引入 -->
+    <script src="../static/jquery-3.3.1.min.js"></script>
+
+    <script src="../static/bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
+
+    <script src="../static/js/echarts.min.js"></script>
+    <title>教师页面</title>
+</head>
+<body>
+<nav class="navbar navbar-expand-sm bg-light navbar-light ">
+    <ul class="navbar-nav">
+        <li class="nav-item active">
+            <a class="nav-link"><h3>在线考试系统</h3></a>
+        </li>
+
+{#         <li class="nav-item active">#}
+{#            <a class="nav-link" href="/toLogin/">学生登陆</a>#}
+{##}
+{#        </li>#}
+{##}
+{#            <li class="nav-item active">#}
+{#            <a class="nav-link" href="/admin/">教师登陆</a>#}
+{#            </li>#}
+        <li>
+            <a href="/logout/"><button data-target="#myModal" data-toggle="modal" class="btn btn-primary">退出</button></a>
+        </li>
+
+        <li style="position: fixed;right:70px; font-size: 40px;color: #9fcdff">{{ message }}{{ teacher.name }}</li>
+
+    </ul>
+</nav>
+
+<div class="container">
+
+  <br>
+  <!-- Nav pills -->
+  <ul class="nav nav-pills" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link active" data-toggle="pill" href="#home">个人信息</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="pill" href="#menu1">成绩统计</a>
+    </li>
+    <li class="nav-item active">
+      <a class="nav-link" data-toggle="pill" href="#menu2">成绩查询</a>
+    </li>
+      <li class="nav-item">
+      <a class="nav-link" href="/admin/student/paper/add/">组卷</a>
+    </li>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div id="home" class="container tab-pane active"><br>
+      <h3>个人信息</h3>
+      <p>登陆成功后可查看我的个人信息哦.</p>
+        <table class="table">
+    <thead>
+      <tr>
+        <th>属性</th>
+        <th>信息</th>
+
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>教工号</td>
+        <td>{{ teacher.id }}</td>
+
+      </tr>
+      <tr class="table-primary">
+        <td>姓名</td>
+        <td>{{ teacher.name }}</td>
+
+      </tr>
+      <tr class="table-success">
+        <td>性别</td>
+        <td>{{ teacher.sex }}</td>
+
+      </tr>
+      <tr class="table-danger">
+        <td>学院</td>
+        <td>{{ teacher.dept }}</td>
+
+      </tr>
+
+      <tr class="table-warning">
+        <td>邮箱地址</td>
+        <td>{{ teacher.email }}</td>
+
+      </tr>
+      <tr class="table-active">
+        <td>出生日期</td>
+        <td>{{ teacher.birth }}</td>
+
+      </tr>
+
+    </tbody>
+  </table>
+    </div>
+
+    <div id="menu1" class="container tab-pane fade"><br>
+      <h3>成绩统计</h3>
+      <p></p>
+        <table class="table">
+            <thead>
+              <tr>
+
+                <th>姓名</th>
+                <th>考试科目</th>
+                  <th>考试时间</th>
+                  <th>操作</th>
+              </tr>
+            </thead>
+
+            <tbody>
+            {#   遍历字典  paper #}
+            {% for paper1 in paper %}
+             <tr class="table-info">
+
+                  <td>{{ teacher.name }}</td>
+                  <td>{{ paper1.subject }}</td>
+                  <td>{{ paper1.examtime }}</td>
+                 <td><a href="/showGrade/?subject={{ paper1.subject }}">
+                     <button type="button" class="btn btn-primary"
+                 data-toggle="collapse" data-target="#demo">查看学生成绩</button></a>
+                 </td>
+
+            {#          <td><button class="btn btn-primary">开始考试</button></td>#}
+              </tr>
+
+            {% endfor %}
+
+
+            </tbody>
+
+        </table>
+
+    <div id="main" style="width: 800px;height:500px;"></div>
+
+    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+
+
+        // 指定图表的配置项和数据
+        var option = {
+    legend: {},
+    tooltip: {},
+    dataset: {
+        // 提供一份数据。
+        source: [
+            ['product', '软件工程', '数据库原理'],
+            ['<60', {{ data_1.data1 }}, {{ data_2.data6 }}],
+            ['60<=成绩<70', {{ data_1.data2 }}, {{ data_2.data7 }}],
+            ['70<=成绩<80', {{ data_1.data3 }}, {{ data_2.data8 }}],
+            ['80<=成绩<90', {{ data_1.data4 }}, {{ data_2.data9 }}],
+            ['90<=成绩', {{ data_1.data5 }}, {{ data_2.data10 }}]
+
+        ]
+    },
+    // 声明一个 X 轴，类目轴（category）。默认情况下，类目轴对应到 dataset 第一列。
+    xAxis: {type: 'category'},
+    // 声明一个 Y 轴，数值轴。
+    yAxis: {},
+    // 声明多个 bar 系列，默认情况下，每个系列会自动对应到 dataset 的每一列。
+    series: [
+        {type: 'bar'},
+        {type: 'bar'}
+    ]
+};
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+
+    </script>
+    </div>
+
+    <div id="menu2" class="container tab-pane fade"><br>
+      <h3>考试成绩</h3>
+
+{#        form表单#}
+      <div class="container">
+          <form action="/queryStudent/" method="get">
+              <input type="hidden" name="tid" value="{{ teacher.id }}">
+              <div class="row">
+                  <div class="col-sm-2">
+                      <div class="form-group">
+                          <label>学号</label>
+                          <input type="text" name="id" class="form-control" placeholder="请输入学号">
+                      </div>
+                  </div>
+
+                  <div class="col-sm-2 offset-1">
+                      <label for="">性别</label>
+
+                      <div class="radio">
+{#                          使用单选框的checked属性，默认 全部 单选按钮被选中#}
+                            <label><input type="radio" name="sex" value="" checked>全部</label>
+                        </div>
+                      <div class="radio">
+                            <label><input type="radio" name="sex" value="男" >男</label>
+                        </div>
+                        <div class="radio">
+                          <label><input type="radio" name="sex" value="女">女</label>
+                        </div>
+                  </div>
+                  <div class="col-sm-2 offset-1">
+                      <label for="">科目</label>
+                      <input type="text" name="subject" placeholder="输入科目名称">
+                  </div>
+
+                  <div class="col-sm-2 offset-2">
+                      <button class="btn btn-success" type="submit">search</button>
+                  </div>
+              </div>
+          </form>
+      </div>
+
+{#    搜到的学生信息#}
+        <div class="container">
+            <table class="table">
+                <thead>
+                  <tr>
+                      <th>学号</th>
+                    <th>姓名</th>
+                      <th>专业</th>
+                    <th>科目</th>
+                    <th>成绩</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                {% for result1 in result %}
+                <tr class="table-primary">
+                    <td>{{ result1.id }}</td>
+                    <td>{{ result1.name }}</td>
+                    <td>{{ result1.major }}</td>
+                    <td>{{ result1.subject }}</td>
+                    <td>{{ result1.grade }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="menu3" class="container tab-pane fade"><br>
+      <h3>题库</h3>
+      <p>题库</p>
+    </div>
+  </div>
+</div>
+</body>
+</html>

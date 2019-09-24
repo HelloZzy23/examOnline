@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>测试成绩页</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="../static/bootstrap-4.3.1-dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- 必须在引入bootstarp.js之前引入 -->
+    <script src="../static/jquery-3.3.1.min.js"></script>
+
+    <script src="../static/bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+<div class="container">
+    <table class="table">
+        <thead>
+          <tr>
+              <th>学号</th>
+            <th>姓名</th>
+              <th>专业</th>
+            <th>科目</th>
+            <th>成绩</th>
+          </tr>
+        </thead>
+    <tbody>
+
+    {% for result1 in result %}
+    <tr class="table-primary">
+        <td>{{ result1.id }}</td>
+        <td>{{ result1.name }}</td>
+        <td>{{ result1.major }}</td>
+        <td>{{ result1.subject }}</td>
+        <td>{{ result1.grade }}</td>
+
+
+{#        <td>#}
+{#            {% for grade1 in result1.grade_set.all %}#}
+{##}
+{#                <span>{{ grade1.grade }}</span>#}
+{##}
+{##}
+{#            {% endfor %}#}
+{#        </td>#}
+
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+</body>
+</html>
